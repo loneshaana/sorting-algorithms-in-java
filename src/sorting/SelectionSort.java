@@ -17,7 +17,7 @@ public class SelectionSort extends Sort{
             replace(min,i,listToSort);
             ++count;
         }
-        System.out.println("No Of Swaps "+count);
+        System.out.println("No Of Swaps Using Selection Sort "+count);
         return listToSort;
     }
 

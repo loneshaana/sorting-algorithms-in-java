@@ -12,7 +12,7 @@ public class InsertionSort extends Sort{
                 ++count;
             }
         }
-        System.out.println("No Of Swaps "+count);
+        System.out.println("No Of Swaps Using Insertion Sort "+count);
         return  listToSort;
     }
 }
