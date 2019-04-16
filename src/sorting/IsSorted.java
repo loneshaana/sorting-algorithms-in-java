@@ -26,9 +26,10 @@ class IsSorted{
         SelectionSort ss = new SelectionSort();
         InsertionSort is = new InsertionSort();
         ShellSort ss1 = new ShellSort();
+        MergeSort ms = new MergeSort();
 
         System.out.println("Is Sorted "+isSorted(toSort));
-        ss1.sort(toSort);
+        ms.sort(toSort);
 //        for(Comparable item : toSort){
 //            System.out.println(item);
 //        }
