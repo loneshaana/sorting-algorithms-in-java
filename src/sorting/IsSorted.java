@@ -27,12 +27,13 @@ class IsSorted{
         InsertionSort is = new InsertionSort();
         ShellSort ss1 = new ShellSort();
         MergeSort ms = new MergeSort();
+        QuickSort qs = new QuickSort();
 
         System.out.println("Is Sorted "+isSorted(toSort));
-        ms.sort(toSort);
-//        for(Comparable item : toSort){
-//            System.out.println(item);
-//        }
+        qs.sort(toSort);
+        for(Comparable item : toSort){
+            System.out.println(item);
+        }
         assert isSorted(toSort);
         System.out.println("Is Sorted "+isSorted(toSort));
     }
