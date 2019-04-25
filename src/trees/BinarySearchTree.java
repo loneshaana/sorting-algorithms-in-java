@@ -1,37 +1,40 @@
 package trees;
 
+import Queue.Queue;
+import Stack.Stack;
+
 class BSTNode{
     private int data;
     private BSTNode left;
     private BSTNode right;
 
-    public BSTNode(int data) {
+    BSTNode(int data) {
         this.data = data;
         this.left = null;
         this.right = null;
     }
 
-    public int getData() {
+    int getData() {
         return data;
     }
 
-    public void setData(int data) {
+    void setData(int data) {
         this.data = data;
     }
 
-    public BSTNode getLeft() {
+    BSTNode getLeft() {
         return left;
     }
 
-    public void setLeft(BSTNode left) {
+    void setLeft(BSTNode left) {
         this.left = left;
     }
 
-    public BSTNode getRight() {
+    BSTNode getRight() {
         return right;
     }
 
-    public void setRight(BSTNode right) {
+    void setRight(BSTNode right) {
         this.right = right;
     }
 }
@@ -91,9 +94,8 @@ public class BinarySearchTree {
     private BSTNode findMin_NonRec(BSTNode root){
         if(root == null) return null;
         if(root.getLeft() == null) return root;
-        Stack<BSTNode> stack = new Stack<>();
+        Stack<BSTNode> stack = new Stack<BSTNode>();
         stack.push(root);
-
         BSTNode node = root;
 
         while (!stack.isEmpty() && node != null){
@@ -153,7 +155,7 @@ public class BinarySearchTree {
             System.out.println("No elements in the tree");
         }else{
             System.out.println("Level Order Traversal :: ");
-            Queue<BSTNode> queue = new Queue<>();
+            Queue<BSTNode> queue = new Queue<BSTNode>();
             queue.enqueue(root);
             while (!queue.isEmpty()){
                 BSTNode cNode = queue.dequeue();

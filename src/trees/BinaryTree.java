@@ -1,5 +1,8 @@
 package trees;
 
+//import java.util.*;
+import Stack.Stack;
+import Queue.Queue;
 import java.util.*;
 
 class BinaryTreeNode{
@@ -57,43 +60,6 @@ class BinaryTreeNode{
     }
 }
 
-class Stack<T>{
-    private List<T> stack = new ArrayList<>();
-    void push(T node){
-        if(!stack.contains(node))
-            stack.add(node);
-    }
-
-    T peek(){
-        return stack.get(stack.size() -1);
-    }
-
-    T pop(){
-        return stack.remove(stack.size()-1);
-    }
-
-    boolean isEmpty(){
-        if(stack.size() >0) return false;
-        return  true;
-    }
-}
-class Queue<T>{
-        private List<T> list = new ArrayList<>();
-
-        void enqueue(T node){
-            list.add(node);
-        }
-
-        T dequeue(){
-           return list.remove(0);
-        }
-
-        boolean isEmpty(){
-            if(list.size()  >0) return false;
-            return true;
-        }
-}
-
 public class BinaryTree {
      private BinaryTreeNode root;
 
@@ -101,7 +67,7 @@ public class BinaryTree {
          if(root == null) {
              root = new BinaryTreeNode(data);
          }else{
-             Queue<BinaryTreeNode> queue = new Queue<>();
+             Queue<BinaryTreeNode> queue = new Queue<BinaryTreeNode>();
              queue.enqueue(root);
 
              while (!queue.isEmpty()){
@@ -124,31 +90,19 @@ public class BinaryTree {
      }
 
      private void levelOrderTraversal(){
-         if(root == null){
-             System.out.println("No elements in the tree");
-         }else{
-             System.out.println("Level Order Traversal :: ");
-             Queue<BinaryTreeNode> queue = new Queue<>();
-             queue.enqueue(root);
-             while (!queue.isEmpty()){
-                 BinaryTreeNode cNode = queue.dequeue();
-                 System.out.print(cNode.getData()+" "); // deque
-                 if(cNode.getLeft() != null){
-                     queue.enqueue(cNode.getLeft());
-                 }
-                 if(cNode.getRight() != null){
-                     queue.enqueue(cNode.getRight());
-                 }
-             }
-         }
+         traversal(root);
      }
 
     private void levelOrderTraversal(BinaryTreeNode root){
+        traversal(root);
+    }
+
+    private void traversal(BinaryTreeNode root) {
         if(root == null){
             System.out.println("No elements in the tree");
         }else{
             System.out.println("Level Order Traversal :: ");
-            Queue<BinaryTreeNode> queue = new Queue<>();
+            Queue<BinaryTreeNode> queue = new Queue<BinaryTreeNode>();
             queue.enqueue(root);
             while (!queue.isEmpty()){
                 BinaryTreeNode cNode = queue.dequeue();
@@ -163,13 +117,13 @@ public class BinaryTree {
         }
     }
 
-     private void inOrderTraversal(){
+    private void inOrderTraversal(){
          System.out.println("\nIn Order Traversal");
          // left // root // right
          if(root == null){
              System.out.println("No Elements In The tree");
          }else{
-             Stack<BinaryTreeNode> stack = new Stack<>();
+             Stack<BinaryTreeNode> stack = new Stack<BinaryTreeNode>();
              BinaryTreeNode node = root;
              while (!stack.isEmpty() || node != null){
                  if(node != null){
@@ -189,7 +143,7 @@ public class BinaryTree {
          if(root == null){
              System.out.println("Tree is empty ...");
          }else{
-             Stack<BinaryTreeNode> stack = new Stack<>();
+             Stack<BinaryTreeNode> stack = new Stack<BinaryTreeNode>();
              BinaryTreeNode node = root;
                 stack.push(node);
              while (!stack.isEmpty()){
@@ -212,8 +166,8 @@ public class BinaryTree {
          if(root == null){
              System.out.println("Tree is Empty");
          }else{
-            Stack<BinaryTreeNode> stack = new Stack<>();
-            Set<BinaryTreeNode>  visited = new HashSet<>();
+            Stack<BinaryTreeNode> stack = new Stack<BinaryTreeNode>();
+            Set<BinaryTreeNode> visited = new HashSet<>();
 
             BinaryTreeNode node = root;
             while (node != null || !stack.isEmpty()){
@@ -242,7 +196,7 @@ public class BinaryTree {
      private int searchElement(int data){
          if(null == root ) return -1;
          if(root.getData() == data) return 1;
-         Queue<BinaryTreeNode> queue = new Queue<>();
+         Queue<BinaryTreeNode> queue = new Queue<BinaryTreeNode>();
          queue.enqueue(root);
 
          while (!queue.isEmpty()){
@@ -259,7 +213,7 @@ public class BinaryTree {
              throw new Error("Tree is empty");
 //             return  null;
          }
-         Queue<BinaryTreeNode> queue = new Queue<>();
+         Queue<BinaryTreeNode> queue = new Queue<BinaryTreeNode>();
          BinaryTreeNode node = root;
          queue.enqueue(root);
          while (!queue.isEmpty()){
@@ -280,7 +234,7 @@ public class BinaryTree {
                  root = null;// null the root , and others will be collected by GC
              }else{
                  // find the node to delete
-                 Queue<BinaryTreeNode> queue = new Queue<>();
+                 Queue<BinaryTreeNode> queue = new Queue<BinaryTreeNode>();
                  queue.enqueue(root);
                  while (!queue.isEmpty()){
                      BinaryTreeNode node = queue.dequeue();
@@ -303,8 +257,8 @@ public class BinaryTree {
              System.out.println("\nTree is empty");
          }else{
              System.out.println("\nReversal Order Traversal");
-             Queue<BinaryTreeNode> queue = new Queue<>();
-             Stack<BinaryTreeNode> stack = new Stack<>();
+             Queue<BinaryTreeNode> queue = new Queue<BinaryTreeNode>();
+             Stack<BinaryTreeNode> stack = new Stack<BinaryTreeNode>();
              queue.enqueue(root);
              while (!queue.isEmpty()){
                 BinaryTreeNode cNode = queue.dequeue();
@@ -324,7 +278,7 @@ public class BinaryTree {
              return 0;
          }
 
-         Queue<BinaryTreeNode> queue = new Queue<>();
+         Queue<BinaryTreeNode> queue = new Queue<BinaryTreeNode>();
          root.setDepth(1);
          queue.enqueue(root);
          int temp = 0;
@@ -351,7 +305,7 @@ public class BinaryTree {
      private void findLevelWithMaximumSum() throws Error{
          if(root == null) throw new Error("Tree Is Empty");
 
-         Queue<BinaryTreeNode> queue = new Queue<>();
+         Queue<BinaryTreeNode> queue = new Queue<BinaryTreeNode>();
          queue.enqueue(root);
          queue.enqueue(null);
          int maxSum = 0 ;
@@ -432,7 +386,7 @@ public class BinaryTree {
 
     private Stack<BinaryTreeNode> printAllAncestors(int data) throws  Error{
         if(root == null) throw new Error("No Data in the tree");
-        Stack<BinaryTreeNode> stack = new Stack<>();
+        Stack<BinaryTreeNode> stack = new Stack<BinaryTreeNode>();
         stack.push(root);
         BinaryTreeNode node = root;
         Set<BinaryTreeNode> processed = new HashSet<>();
@@ -510,9 +464,7 @@ public class BinaryTree {
         Stack<BinaryTreeNode> stack = bt.printAllAncestors(8);
         System.out.println("\nPrint All Ancestors Of 8 Non Recursively\n");
 
-        while (!stack.isEmpty()){
-            System.out.print(stack.pop().getData()+" ");
-        }
+        while (!stack.isEmpty()) System.out.print(stack.pop().getData() + " ");
         System.out.println();
         BinaryTree tree = new BinaryTree();
 

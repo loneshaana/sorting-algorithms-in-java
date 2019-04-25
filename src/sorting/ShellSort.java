@@ -6,7 +6,7 @@ package sorting;
 * the insertion sort
 */
 
-public class ShellSort extends Sort {
+ class ShellSort extends Sort {
 
     @Override
     Comparable[] sort(Comparable[] listToSort) {

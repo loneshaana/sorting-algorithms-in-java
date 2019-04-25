@@ -44,6 +44,12 @@ public class MaxHeap {
 
     private void maxHeapify(int index){
         // check every thing is according the maxHeap
+        /*
+            Check if the current index is the leaf index then do nothing
+            if not
+            then if it is less than left or right childs
+            then swap it with the larger one
+         */
         if(!isLeaf(index)){
             /*
                 index is not the leaf
@@ -74,6 +80,12 @@ public class MaxHeap {
 
         Heap[++size] = data;
         int current = size;
+        /*
+            If the inserted element is greater than its parent
+            Then Swap it with its parent
+            and make parent as the current;
+            do it until all the heap is in MaxHeap order
+         */
         while (Heap[current] > Heap[parent(current)]){
             // then swap
             swap(current,parent(current));
