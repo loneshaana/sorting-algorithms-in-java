@@ -1,5 +1,6 @@
 package Graph;
 
+import Queue.Queue;
 import Stack.Stack;
 
 class Vertex{
@@ -20,7 +21,7 @@ class Vertex{
     }
 }
 public class Graph {
-    private final int MAX_VERTS =20;
+    private final int MAX_VERTS = 20;
     private Vertex[] vertexList;
     private int[][] adjMat;
     private int nVerts;
@@ -47,6 +48,26 @@ public class Graph {
                 return j;
         }
         return -1;
+    }
+
+    private void bfs(){
+        vertexList[0].setWasVisited(true);
+        displayVertex(0);
+        Queue<Integer> queue = new Queue<Integer>();
+        queue.enqueue(0);
+        while (!queue.isEmpty()){
+            int v = getAdjUnVisitedVertex(queue.front());
+            if(v == -1){
+                queue.dequeue();
+            }else{
+                queue.enqueue(v);
+                vertexList[v].setWasVisited(true);
+                displayVertex(v);
+            }
+        }
+        for(int j=0;j<nVerts;j++){
+            vertexList[j].setWasVisited(false);
+        }
     }
     /* depth-first-search */
     private void dfs(){
@@ -85,6 +106,9 @@ public class Graph {
         graph.addEdge(1,2); // B->C || C->B
         graph.addEdge(0,3); // A->D || D->A
         graph.addEdge(3,4); // D->E || E->D
+        System.out.println("DFS");
         graph.dfs();
+        System.out.println("BFS");
+        graph.bfs();
     }
 }

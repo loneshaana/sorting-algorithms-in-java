@@ -14,6 +14,8 @@ public class Queue<T>{
         return list.remove(0);
     }
 
+    public T front(){ return list.get(0);}
+
     public boolean isEmpty(){
         if(list.size()  >0) return false;
         return true;
