@@ -18,6 +18,8 @@ public class Stack<T>{
         return stack.remove(stack.size()-1);
     }
 
+    public int length(){return stack.size();}
+
     public boolean isEmpty(){
         if(stack.size() >0) return false;
         return  true;

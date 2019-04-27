@@ -20,13 +20,14 @@ class Vertex{
         this.wasVisited = flag;
     }
 }
+
 public class Graph {
     private final int MAX_VERTS = 20;
     private Vertex[] vertexList;
     private int[][] adjMat;
     private int nVerts;
 
-    private Graph() {
+    Graph() {
         this.vertexList = new Vertex[MAX_VERTS];
         this.adjMat = new int[MAX_VERTS][MAX_VERTS];
         this.nVerts = 0;
