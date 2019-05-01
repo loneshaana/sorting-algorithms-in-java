@@ -3,15 +3,24 @@ package Trie;
 public class Trie_Node {
     private static int NUMBER_OF_CHARACTERS = 26;
     Trie_Node[] children = new Trie_Node[NUMBER_OF_CHARACTERS];
-    int size = 0;
-    int freq = 0;
+    private int size = 0;
+    private int freq = 0;
+    private boolean isLeaf = false;
+
+    private void setLeaf(boolean flag){
+        this.isLeaf = flag;
+    }
+    public boolean getLeaf(){
+        return this.isLeaf;
+    }
 
     public int getFreq() {
         return this.freq;
     }
 
-    public static int getCharIndex(char c) {
+    private static int getCharIndex(char c) {
         if (Character.isUpperCase(c)) return c - 'A';
+        if(Character.isDigit(c)) return c -'0';
         return c - 'a';
     }
 
@@ -19,7 +28,7 @@ public class Trie_Node {
         return children[getCharIndex(c)];
     }
 
-    public void setNode(char c, Trie_Node node) {
+    private void setNode(char c, Trie_Node node) {
         children[getCharIndex(c)] = node;
     }
 
@@ -27,16 +36,34 @@ public class Trie_Node {
         add(s, 0);
     }
 
+    public Trie_Node search(String s){
+        Trie_Node root = this;
+        for(int i=0;i<s.length();i++) {
+            Trie_Node node = root.getNode(s.charAt(i));
+            if(node == null) return new Trie_Node();
+            root = node;
+        }
+        return root;
+    }
+
+    public void delete(String key){
+       Trie_Node node = search(key);
+       if(node.getLeaf()){
+           node.setLeaf(false);
+       }
+    }
+
     public void add(String s, int index) {
-        size++;
         if (index == s.length()) return;
         char current = s.charAt(index);
         Trie_Node child = getNode(current);
         if (child == null) {
             child = new Trie_Node();
             setNode(current, child);
+            if(s.length()-1 == index) child.setLeaf(true);
         }
         child.freq++;
+        size++;
         child.add(s, index + 1);
     }
 
