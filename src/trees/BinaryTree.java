@@ -5,65 +5,10 @@ import Stack.Stack;
 import Queue.Queue;
 import java.util.*;
 
-class BinaryTreeNode{
-    private int data;
-    private BinaryTreeNode left;
-    private BinaryTreeNode right;
-    private int depth;
-
-     BinaryTreeNode(int data){
-         this.data = data;
-         this.left = null;
-         this.right = null;
-         this.depth = 0;
-     }
-
-     int getData() {
-        return data;
-     }
-
-     void setData(int data) {
-        this.data = data;
-     }
-
-    BinaryTreeNode getLeft() {
-        return left;
-    }
-
-    void setLeft(BinaryTreeNode left) {
-        this.left = left;
-    }
-
-    BinaryTreeNode getRight() {
-        return right;
-    }
-
-    void setRight(BinaryTreeNode right) {
-        this.right = right;
-    }
-
-    int getDepth() {
-        return depth;
-    }
-
-    void setDepth(int depth) {
-        this.depth = depth;
-    }
-
-    @Override
-    public String toString() {
-        return "BinaryTreeNode{" +
-                "data=" + data +
-                ", left=" + left +
-                ", right=" + right +
-                '}';
-    }
-}
-
 public class BinaryTree {
-     private BinaryTreeNode root;
+     public BinaryTreeNode root;
 
-     private void insert(int data){
+     public void insert(int data){
          if(root == null) {
              root = new BinaryTreeNode(data);
          }else{
@@ -89,15 +34,14 @@ public class BinaryTree {
          }
      }
 
-     private void levelOrderTraversal(){
+     public void levelOrderTraversal(){
          traversal(root);
      }
-
-    private void levelOrderTraversal(BinaryTreeNode root){
+     public void levelOrderTraversal(BinaryTreeNode root){
         traversal(root);
     }
 
-    private void traversal(BinaryTreeNode root) {
+     void traversal(BinaryTreeNode root) {
         if(root == null){
             System.out.println("No elements in the tree");
         }else{
@@ -287,6 +231,7 @@ public class BinaryTree {
          while (!queue.isEmpty()){
              BinaryTreeNode node = queue.dequeue();
              depth = Math.max(temp ,node.getDepth());
+
              if(node.getLeft() != null){
                  BinaryTreeNode leftNode = node.getLeft();
                  leftNode.setDepth(depth+1);
@@ -356,7 +301,7 @@ public class BinaryTree {
      }
 
      private BinaryTreeNode findLCA(BinaryTreeNode root,int alpha,int beta){
-        if(null == root) return root;
+        if(null == root) return null;
         if(root.getData() == alpha || root.getData() == beta) return root;
          BinaryTreeNode left = findLCA(root.getLeft(),alpha,beta);
          BinaryTreeNode right = findLCA(root.getRight(),alpha,beta);
@@ -419,15 +364,77 @@ public class BinaryTree {
         return stack;
     }
 
+    private BinaryTreeNode finLcaUsingPathFinding(BinaryTreeNode tree , int alpha , int beta){
+        if(alpha == beta) return null;
+        Stack<BinaryTreeNode> stack1 = pathTo(tree, alpha);
+        Stack<BinaryTreeNode> stack2 = pathTo(tree, beta);
+        if(stack1.isEmpty() || stack2.isEmpty()) return null;
+        BinaryTreeNode prev = null;
+        while (!stack1.isEmpty() && !stack2.isEmpty()){
+            BinaryTreeNode s1 = stack1.pop();
+            BinaryTreeNode s2 = stack2.pop();
+            if(s1.getData() == s2.getData()) prev = s1;
+            else break;
+        }
+        return prev;
+    }
+
+    private Stack<BinaryTreeNode> pathToRecursive(BinaryTreeNode tree, int node){
+        if(tree == null) return null;
+        if(tree.getData() == node) {
+            Stack<BinaryTreeNode> stack = new Stack<BinaryTreeNode>();
+            stack.push(tree);
+            return stack;
+        }
+
+        Stack<BinaryTreeNode> left = pathToRecursive(tree.getLeft() , node);
+        Stack<BinaryTreeNode> right = pathToRecursive(tree.getRight() , node);
+
+        if(left != null) {
+            left.push(tree);
+            return left;
+        }
+        if(right != null){
+            right.push(tree);
+            return right;
+        }
+        return null;
+    }
+
+    private Stack<BinaryTreeNode> pathTo(BinaryTreeNode tree,int node){
+
+        /*
+            Normal Implementation
+         */
+        Stack<BinaryTreeNode> stack = new Stack<BinaryTreeNode>();
+        Set<BinaryTreeNode> visited = new HashSet<>();
+        BinaryTreeNode curr = tree;
+
+        while (!stack.isEmpty() || curr != null){
+            if(curr != null){
+                stack.push(curr);
+                curr = curr.getLeft();
+            }else{
+                BinaryTreeNode end = stack.peek();
+                visited.add(end);
+                if(end.getData() == node) break;
+                if(end.getRight() != null && !visited.contains(end.getRight()))
+                    curr = end.getRight();
+                else {
+                    stack.pop();
+                    curr = null;
+                }
+            }
+        }
+        return stack.reverse();
+    }
+
     private BinaryTreeNode constructBinaryTree(List inOrder,List preOrder,int inStart,int inEnd){
 
         // inorder 7 3 6 1 5 2 4 8
         // preorder 1 3 7 6 2 5 4 8 -> First Element in the preorder is the root -> find the root element in the inorder
-
         // left side of the root in inorder creates the left subtree and so on right or root creates right sub tree
-
         // so root is 1
-
         if(inStart > inEnd) return  null;
 
         BinaryTreeNode node = new BinaryTreeNode( (Integer) preOrder.get(preIndex++));
@@ -440,7 +447,6 @@ public class BinaryTree {
 
         node.setRight(constructBinaryTree(inOrder,preOrder,rootPos+1,inEnd));
         // construct Right subtree start from rootPos to end
-
         return node;
 
     }
@@ -458,18 +464,25 @@ public class BinaryTree {
         bt.insert(5);
         bt.insert(6);
         bt.insert(7);
-        bt.insert(8);
+//        bt.insert(8);
+//        bt.insert(9);
+//        bt.insert(10);
+//        bt.insert(11);
 //        System.out.println("\nPrint All Ancestors Of 7");
 //        bt.printAllAncestors(bt.root,7);
-        Stack<BinaryTreeNode> stack = bt.printAllAncestors(8);
-        System.out.println("\nPrint All Ancestors Of 8 Non Recursively\n");
-
-        while (!stack.isEmpty()) System.out.print(stack.pop().getData() + " ");
-        System.out.println();
-        BinaryTree tree = new BinaryTree();
-
-        BinaryTreeNode rootNode = bt.constructBinaryTree(inOrder,preOrder,0,inOrder.size()-1);
-            bt.levelOrderTraversal(rootNode);
+        BinaryTreeNode lca = bt.finLcaUsingPathFinding(bt.root,4,6);
+        if(lca == null) System.out.println("No Lca Found");
+        else
+        System.out.println("LCA :: "+lca.getData());
+//        Stack<BinaryTreeNode> stack = bt.printAllAncestors(8);
+//        System.out.println("\nPrint All Ancestors Of 8 Non Recursively\n");
+//
+//        while (!stack.isEmpty()) System.out.print(stack.pop().getData() + " ");
+//        System.out.println();
+//        BinaryTree tree = new BinaryTree();
+//
+//        BinaryTreeNode rootNode = bt.constructBinaryTree(inOrder,preOrder,0,inOrder.size()-1);
+//            bt.levelOrderTraversal(rootNode);
 //         bt.root = new BinaryTreeNode(1);
 //         bt.root.setLeft(new BinaryTreeNode(2));
 //         bt.root.setRight(new BinaryTreeNode(3));
@@ -478,19 +491,19 @@ public class BinaryTree {
 //         bt.root.getRight().setLeft(new BinaryTreeNode(6));
 //         bt.root.getRight().setRight(new BinaryTreeNode(7));
 //         bt.root.getLeft().getLeft().setRight(new BinaryTreeNode(8));
-        bt.findLevelWithMaximumSum();
-        System.out.println("\nFind Lca  of 5 & 6 = "+bt.findLCA(bt.root,5,6).getData());
-        System.out.println("\n Are Mirros "+bt.areMirros(bt.root,bt.root));
-        bt.mirrorOfBinaryTree(bt.root);
-        bt.levelOrderTraversal();
-        bt.inOrderTraversal();
-        bt.preOrderTraversal();
-        bt.postOrderTraversal();
-        bt.deleteNode(2);
-        bt.reverseLevelOrder();
-
-        System.out.println("\nSearching Element 6 "+bt.searchElement(6));
-        System.out.println("Depth of tree "+bt.maxDepth());
+//        bt.findLevelWithMaximumSum();
+//        System.out.println("\nFind Lca  of 5 & 6 = "+bt.findLCA(bt.root,5,6).getData());
+//        System.out.println("\n Are Mirros "+bt.areMirros(bt.root,bt.root));
+//        bt.mirrorOfBinaryTree(bt.root);
+//        bt.levelOrderTraversal();
+//        bt.inOrderTraversal();
+//        bt.preOrderTraversal();
+//        bt.postOrderTraversal();
+//        bt.deleteNode(2);
+//        bt.reverseLevelOrder();
+//
+//        System.out.println("\nSearching Element 6 "+bt.searchElement(6));
+//        System.out.println("Depth of tree "+bt.maxDepth());
 
     }
 }

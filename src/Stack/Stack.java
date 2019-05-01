@@ -20,6 +20,14 @@ public class Stack<T>{
 
     public int length(){return stack.size();}
 
+    public Stack<T> reverse(){
+        Stack<T> newStack = new Stack<T>();
+        while (!this.stack.isEmpty()){
+            newStack.push(this.pop());
+        }
+        return newStack;
+    }
+
     public boolean isEmpty(){
         if(stack.size() >0) return false;
         return  true;

@@ -143,7 +143,7 @@ class DirectedGraph {
             if(!vertices[i].isVisited()) topologicalSort(i,stack);
         }
         while (!stack.isEmpty()){
-            System.out.println(stack.pop().getLabel());
+            System.out.print(stack.pop().getLabel()+" ");
         }
     }
 
@@ -166,8 +166,8 @@ class DirectedGraph {
             if(vertices[i].getInDegree() == 0)queue.add(vertices[i]);
             indegree.put(vertices[i],vertices[i].getInDegree());
         }
-
         int count = 0;
+
         Vector<DirectedVertex> topOrder = new Vector<>();
         while (!queue.isEmpty()){
             DirectedVertex v = queue.poll();
@@ -186,10 +186,40 @@ class DirectedGraph {
             System.out.println("There is a loop");
             return;
         }
-        for(DirectedVertex v : topOrder){
-            System.out.print(v.getLabel()+" ");
+        for(int i=topOrder.size()-1;i>=0;i--){
+            System.out.print(topOrder.get(i).getLabel()+" ");
         }
     }
+
+   private List<DirectedVertex> findShortestPath(DirectedVertex a,DirectedVertex b){
+        if(a == null || b == null) return null;
+        Queue<DirectedVertex> toVisit = new LinkedList<>();
+        HashMap<DirectedVertex,DirectedVertex> parents = new HashMap<>();
+        toVisit.add(a);
+        parents.put(a,null);
+        
+        while (!toVisit.isEmpty()){
+            DirectedVertex curr = toVisit.remove();
+            if(curr == b) break;
+            Set<DirectedVertex> childrens = edges.get(curr);
+
+            if(childrens != null){
+                for(DirectedVertex n : childrens){
+                    toVisit.add(n);
+                    parents.put(n,curr);
+                }
+            }
+        }
+
+        if(parents.get(b) == null) return null;
+        List<DirectedVertex> output = new LinkedList<>();
+        DirectedVertex curr = b;
+        while (curr != null){
+            output.add(0,curr);
+            curr = parents.get(curr);
+        }
+        return output;
+   }
 
     public static void main(String[] args) {
         DirectedGraph directedGraph = new DirectedGraph();
@@ -218,13 +248,33 @@ class DirectedGraph {
         directedGraph.addEdge(E,I);
         directedGraph.addEdge(J,E);
 
-        directedGraph.dfsUtil();
-        System.out.println("\n________________________\n");
-        directedGraph.topologicalSort(); // E B C A D
-        System.out.println("\n________________________\n");
-        directedGraph.kanhsAlgorithms();
+//        directedGraph.dfsUtil();
+//        System.out.println("\n________________________\n");
+//        directedGraph.topologicalSort(); // E B C A D
+//        System.out.println("\n________________________\n");
+//        directedGraph.kanhsAlgorithms();
 
         System.out.println("\nIn Degree of A "+A.getInDegree());
 
+        DirectedGraph newGraph = new DirectedGraph();
+        DirectedVertex a = newGraph.addVertex('0');
+        DirectedVertex b =newGraph.addVertex('1');
+        DirectedVertex c =newGraph.addVertex('2');
+        DirectedVertex d =newGraph.addVertex('3');
+        DirectedVertex e =newGraph.addVertex('4');
+//        newGraph.addEdge(a,b);
+        newGraph.addEdge(b,a);
+        newGraph.addEdge(c,a);
+        newGraph.addEdge(d,b);
+        newGraph.addEdge(d,c);
+        newGraph.addEdge(e,d);
+//        newGraph.topologicalSort();
+        System.out.println( );
+        newGraph.kanhsAlgorithms();
+        List<DirectedVertex> shortestPath = newGraph.findShortestPath(e,a);
+        System.out.println("Shortest Path");
+        for(DirectedVertex p : shortestPath){
+            System.out.print(p.getLabel()+" ");
+        }
     }
 }

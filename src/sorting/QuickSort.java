@@ -21,7 +21,7 @@ public class QuickSort extends Sort {
         Comparable item = a[low];
         while (true){
             // scan from left - to right for greater element
-            while (!less(item,a[++i])){
+            while (!less(item , a[++i])){
                 if(i == high) break;
             }
 

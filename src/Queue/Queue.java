@@ -6,6 +6,9 @@ import java.util.List;
 public class Queue<T>{
     private List<T> list = new ArrayList<>();
 
+    public int size(){
+        return list.size();
+    }
     public void enqueue(T node){
         list.add(node);
     }
